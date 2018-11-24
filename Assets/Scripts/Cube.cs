@@ -8,7 +8,7 @@ public class Cube : MonoBehaviour {
     {
         if (other.collider.tag == "Player")
         {
-            Debug.Log(this.name + " Killed");
+            GameManager.instance.cubeDestroyedCount++;
             Destroy(other.gameObject);
             Destroy(this.gameObject);
 
