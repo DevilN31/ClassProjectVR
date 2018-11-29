@@ -12,25 +12,11 @@ public class ScaryImage : MonoBehaviour {
         ShowImage(canShowImage);
     }
 
-	
-	void Update ()
-    {
-        if(GameManager.instance.cubeDestroyedCount >= 5)
-        {
-            canShowImage = true;
-        }
 
-        if (canShowImage)
-        {
-            ShowImage(canShowImage);
-        }	
-	}
-
-    void ShowImage(bool showImage)
+   public void ShowImage(bool showImage)
     {
         GetComponent<MeshRenderer>().enabled = showImage;
         GetComponent<MeshCollider>().enabled = showImage;
-
 
     }
 }

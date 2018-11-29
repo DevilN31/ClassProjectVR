@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance;
 
     public int cubeDestroyedCount;
+    public ImageTrigger imageTrigger;
 
     // Use this for initialization
     void Start ()
@@ -18,5 +19,15 @@ public class GameManager : MonoBehaviour {
 
         cubeDestroyedCount = 0;
 	}
+
+    void Update()
+    {
+        if(cubeDestroyedCount >= 5)
+        {
+            imageTrigger.showTrigger = true;
+            imageTrigger.ShowImageTrigger(imageTrigger.showTrigger);
+        }
+
+    }
 	
 }
