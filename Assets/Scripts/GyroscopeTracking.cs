@@ -12,7 +12,6 @@ public class GyroscopeTracking : MonoBehaviour {
         transform.parent = _parent.transform;
     }
 
-	// Use this for initialization
 	void Start ()
     {
         Input.gyro.enabled = true;
@@ -28,7 +27,6 @@ public class GyroscopeTracking : MonoBehaviour {
         return new Quaternion(q.x, q.y, -q.z, -q.w);
     }
 
-    // Update is called once per frame
     void Update ()
     {
         //transform.rotation = Input.gyro.attitude;	

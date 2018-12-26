@@ -1,41 +1,111 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class LookHandler : MonoBehaviour {
 
-    private Transform cameraTransform;
-    float deltaDegrees;
+    public Material material;
+    bool didLookAtMeLastFrame;
+    public bool isGrounded;
 
-    void Awake()
-    {
-        cameraTransform = Camera.main.transform;
-    }
+    float _deltaDegrees;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+	//max angle to determine if camera is looking at me
+    float maxFocusDegrees = 10;
+
+    //is the camera looking at me? 
+    bool isLookingAtMe { get { return (deltaDegrees < maxFocusDegrees); } }
 	
-    void HandleLookAt()
+    float deltaDegrees
     {
-        Vector3 camToMe = (transform.position - cameraTransform.position).normalized;
-        Vector3 camForward = cameraTransform.forward;
+        get { return _deltaDegrees; }
+        set
+        {
+            //instead of checking if looking at me at every frame, check only if camera moved/rotated 
+            if (value != _deltaDegrees)
+            {
+                _deltaDegrees = value;
 
-        Debug.DrawRay(cameraTransform.position, camToMe * 10, Color.green);
-        Debug.DrawRay(cameraTransform.position, camForward * 10, Color.red);
-
-         deltaDegrees = Vector3.Angle(camToMe, camForward);
+                //TODO: check if looking at me....next class
+                DegreeValueChange();
+            }
+        }
     }
 
-	// Update is called once per frame
-	void Update ()
+    private void Awake()
     {
-        HandleLookAt();	
-	}
-
-    void OnGUI()
-    {
-        GUILayout.Label("Degrees: " + deltaDegrees);
+        //reference to the camera's transform
+        material = GetComponent<MeshRenderer>().material;
     }
+
+    void Update()
+    {
+      //  HandleLookAt();
+    }
+	
+	void HandleLookAt()
+    {
+        
+        //create a vector that is the forward vector (z axis in world space) of the camera
+        Vector3 camForward = GyroGameManager.instance.cameraTransform.forward;
+        //create a vector that is the direction from the camera to me
+        Vector3 camToMe = (transform.position - GyroGameManager.instance.cameraTransform.position).normalized;
+
+        //show them in the scene view only
+        Debug.DrawRay(GyroGameManager.instance.cameraTransform.position, camForward * 3, Color.red);
+        Debug.DrawRay(GyroGameManager.instance.cameraTransform.position, camToMe * 3, Color.green);
+
+        //calculate angle between the two vectors
+        deltaDegrees = Vector3.Angle(camToMe, camForward);
+    }
+	
+	 private void DegreeValueChange()
+    {
+        if (isLookingAtMe && !didLookAtMeLastFrame)
+        {
+            isGrounded = false;
+
+            // ChangeColor(Color.red);
+            Bounce(isGrounded);
+            if (OnLookAtAction != null)
+                OnLookAtAction(true, this.name);
+        }
+        else if(!isLookingAtMe && didLookAtMeLastFrame)
+        {
+            if (OnLookAtAction != null)
+                OnLookAtAction(false, this.name);
+        }
+
+        didLookAtMeLastFrame = isLookingAtMe;
+    }
+
+    void ChangeColor(Color color)
+    {
+        material.color = color;
+    }
+
+
+    private void OnGUI()
+    {
+        GUILayout.Label("deltaDegrees = " + deltaDegrees.ToString());
+    }
+
+    public delegate void LookAtAction(bool isLookingAtMe, String name);
+    public static event LookAtAction OnLookAtAction;
+
+    public void Bounce(bool isInAir)
+    {
+        if(isInAir)
+        GetComponent<Rigidbody>().AddExplosionForce(500, transform.position, 1f);
+    }
+
+    void OnCollisionEnter(Collision col)
+    {
+        if(col.gameObject.tag == "Finish")
+        {
+            isGrounded = true;
+        }
+    }
+
 }

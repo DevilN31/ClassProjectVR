@@ -17,20 +17,18 @@ public class ImageTrigger : MonoBehaviour {
    public void ShowImageTrigger(bool showTrigger)
     {
         GetComponent<MeshRenderer>().enabled = showTrigger;
-        GetComponent<MeshCollider>().enabled = showTrigger;
+        GetComponent<BoxCollider>().enabled = showTrigger;
 
     }
 
     void OnCollisionEnter(Collision other)
     {
-        Debug.Log("Trigger hit");
 
         if (other.collider.tag == "Player")
         {
-            Debug.Log("Player hit trigger");
 
             scaryImage.canShowImage = true;
-            scaryImage.ShowImage(scaryImage.canShowImage);
+            scaryImage.StartCoroutine(scaryImage.StartScaryImage());
 
         }
     }
