@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/Scenes/VrGun.unity
+  - enabled: 0
+    path: Assets/Scenes/MyVr.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/VrCitizenMap.unity
+    guid: 1dc7a7121ffa6184f898d0748af7c456
   m_configObjects: {}

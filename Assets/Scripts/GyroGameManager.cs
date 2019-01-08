@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GyroGameManager : MonoBehaviour {
 
@@ -20,16 +21,26 @@ public class GyroGameManager : MonoBehaviour {
 
     void OnEnable()
     {
-        LookHandler.OnLookAtAction += PrintTargetName;
+        //   LookHandler.OnLookAtAction += EnableTouch;
     }
 
     void OnDisable()
     {
-        LookHandler.OnLookAtAction -= PrintTargetName;
+        // LookHandler.OnLookAtAction -= EnableTouch;
     }
-    void PrintTargetName(bool isLooking, string targetName)
+
+   public void EnableTouch(bool isLooking)
     {
-        if(isLooking)
-        Debug.Log("Hit: " + targetName);
+        Debug.Log(isLooking);
+        InputManager.instance.ListenToTouchInput(isLooking);
     }
+    
+   public void LoadBar()
+    {
+        ProgressBarController.instance.LoadingProgress(InputManager.instance.timer);
+    }
+    
+
+
+ 
 }

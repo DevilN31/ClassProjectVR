@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
@@ -9,8 +10,9 @@ public class GameManager : MonoBehaviour {
     public int cubeDestroyedCount;
     public ImageTrigger imageTrigger;
 
-    // Use this for initialization
-    void Start ()
+    public GameObject player;
+
+    void Awake ()
     {
         if(instance == null)
         {
@@ -28,6 +30,10 @@ public class GameManager : MonoBehaviour {
             imageTrigger.ShowImageTrigger(imageTrigger.showTrigger);
         }
 
+        if (Input.GetKeyDown("joystick 1 button 0"))
+        {
+            Application.Quit();
+        }        
     }
 	
 }

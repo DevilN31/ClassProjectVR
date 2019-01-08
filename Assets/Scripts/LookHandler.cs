@@ -69,12 +69,12 @@ public class LookHandler : MonoBehaviour {
             // ChangeColor(Color.red);
             Bounce(isGrounded);
             if (OnLookAtAction != null)
-                OnLookAtAction(true, this.name);
+                OnLookAtAction(true);
         }
         else if(!isLookingAtMe && didLookAtMeLastFrame)
         {
             if (OnLookAtAction != null)
-                OnLookAtAction(false, this.name);
+                OnLookAtAction(false);
         }
 
         didLookAtMeLastFrame = isLookingAtMe;
@@ -91,7 +91,7 @@ public class LookHandler : MonoBehaviour {
         GUILayout.Label("deltaDegrees = " + deltaDegrees.ToString());
     }
 
-    public delegate void LookAtAction(bool isLookingAtMe, String name);
+    public delegate void LookAtAction(bool isLookingAtMe);
     public static event LookAtAction OnLookAtAction;
 
     public void Bounce(bool isInAir)

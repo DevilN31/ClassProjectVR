@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GazeInteract : MonoBehaviour {
-	
+
+    bool isLooking;
+
 	// Update is called once per frame
 	void FixedUpdate () {
         CastRay();
@@ -14,17 +16,27 @@ public class GazeInteract : MonoBehaviour {
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray,out hit))
+        if (Physics.Raycast(ray, out hit))
         {
             if (hit.collider.GetComponent<LookHandler>())
             {
-                hit.collider.GetComponent<LookHandler>().Bounce(hit.collider.GetComponent<LookHandler>().isGrounded);
-                if (hit.collider.GetComponent<LookHandler>().isGrounded)
-                    StartCoroutine(GayMaterial(hit.collider.GetComponent<LookHandler>().material));
-                hit.collider.GetComponent<LookHandler>().isGrounded = false;
-                
+                isLooking = true;
+                /* hit.collider.GetComponent<LookHandler>().Bounce(hit.collider.GetComponent<LookHandler>().isGrounded);
+                 if (hit.collider.GetComponent<LookHandler>().isGrounded)
+                     StartCoroutine(GayMaterial(hit.collider.GetComponent<LookHandler>().material));
+                 hit.collider.GetComponent<LookHandler>().isGrounded = false;
+                 */
+                GyroGameManager.instance.EnableTouch(isLooking);
+                GyroGameManager.instance.LoadBar();
             }
         }
+        else
+        {
+            isLooking = false;
+            GyroGameManager.instance.EnableTouch(isLooking);
+            ProgressBarController.instance.ResetProgressBar();
+        }
+
     }
 
     IEnumerator GayMaterial(Material m)

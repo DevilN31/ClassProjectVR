@@ -4,34 +4,41 @@ using UnityEngine;
 
 public class GyroscopeTracking : MonoBehaviour {
 
-#if UNITY_EDITOR  
-    private void Awake()
+#if UNITY_EDITOR
+    private void Start()
     {
-        GameObject _parent = new GameObject("CameraRoot");
-        _parent.transform.rotation = Quaternion.Euler(90, 0, 0);
-        transform.parent = _parent.transform;
+        CreateParent();
+
+        Input.gyro.enabled = true;
+
     }
 
-	void Start ()
+    private static Quaternion GyroToUnity(Quaternion quaternion)
     {
-        Input.gyro.enabled = true;
-	}
+        return new Quaternion(quaternion.x, quaternion.y, -quaternion.z, -quaternion.w);
+    }
 
-    void GyroModifyCamera()
+    private void GyroModifyCamera()
     {
         transform.localRotation = GyroToUnity(Input.gyro.attitude);
     }
 
-    private static Quaternion GyroToUnity(Quaternion q)
+    private void Update()
     {
-        return new Quaternion(q.x, q.y, -q.z, -q.w);
-    }
-
-    void Update ()
-    {
-        //transform.rotation = Input.gyro.attitude;	
         GyroModifyCamera();
-
     }
+
+    private void CreateParent()
+    {
+
+        GameObject parent = new GameObject("Camera Root");
+        parent.transform.localRotation = Quaternion.Euler(90, 0, 0);
+        transform.parent = parent.transform;
+
+
+        if (GameManager.instance.player != null)
+            parent.transform.parent = GameManager.instance.player.transform;
+    }
+
 #endif
 }
