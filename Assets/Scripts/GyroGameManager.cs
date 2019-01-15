@@ -7,7 +7,7 @@ public class GyroGameManager : MonoBehaviour {
 
     public static GyroGameManager instance;
     [System.NonSerialized]
-    public Transform cameraTransform;
+    public Transform cameraTransform; 
 
     void Awake()
     {
@@ -16,6 +16,7 @@ public class GyroGameManager : MonoBehaviour {
         else
             Destroy(this);
 
+        DontDestroyOnLoad(gameObject);
         cameraTransform = Camera.main.transform;
     }
 

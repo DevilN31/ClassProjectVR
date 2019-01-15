@@ -24,8 +24,11 @@ public class InputManager : MonoBehaviour {
             instance = this;
 
         else
-            Destroy(gameObject);
-    } 
+            Destroy(this);
+
+        DontDestroyOnLoad(gameObject);
+
+    }
 
     void Update () 
     {
